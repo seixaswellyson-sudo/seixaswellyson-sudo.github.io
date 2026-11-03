@@ -176,13 +176,28 @@
   .section-head h2 { font-size: clamp(30px, 4vw, 46px); }
   .section-head p { color: var(--muted); max-width: 340px; font-size: 15px; }
 
-  /* ---------- Hero (fullscreen, image reveal) ---------- */
-  .hs{position:relative;min-height:100svh;background:#000;overflow:hidden;display:flex;align-items:center;padding:96px 0 56px;touch-action:pan-y}
-  .hs-stage{position:absolute;top:0;right:0;bottom:0;width:74%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 24%);mask-image:linear-gradient(90deg,transparent 0,#000 24%)}
-  .hs-layer{position:absolute;inset:0;background:#0b0b0e}
+  /* ---------- Hero (fullscreen, cursor reveal) ----------
+     Base (fundo):  piloto de capacete
+     Por cima:      sua foto, com um "buraco" oval que segue o mouse
+     => passando o mouse, o oval mostra o piloto por baixo. */
+  .hs{position:relative;min-height:100svh;background:#000;overflow:hidden;display:flex;align-items:center;padding:96px 0 56px}
+  .hs-stage{position:absolute;top:0;right:0;bottom:0;width:74%;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 24%);
+    mask-image:linear-gradient(90deg,transparent 0,#000 24%)}
+  .hs-layer{position:absolute;inset:0;width:100%;height:100%;background:#000;transform:translateZ(0)}
   .hs-layer picture,.hs-layer img{display:block;width:100%;height:100%}
-  .hs-layer img{object-fit:cover;object-position:50% 0}
-  .hs-reveal{--x:50%;--y:40%;--r:0px;-webkit-mask-image:radial-gradient(circle var(--r) at var(--x) var(--y),#000 0,#000 40%,transparent 100%);mask-image:radial-gradient(circle var(--r) at var(--x) var(--y),#000 0,#000 40%,transparent 100%)}
+  .hs-layer img{object-fit:cover;object-position:50% 0;user-select:none;-webkit-user-drag:none}
+
+  /* sua foto: máscara com buraco oval (posição/tamanho vêm do JS) */
+  .hs-me{
+    --x:-9999px; --y:-9999px; --rx:0.01px; --ry:0.01px;
+    pointer-events:none;
+    -webkit-mask-image:radial-gradient(ellipse var(--rx) var(--ry) at var(--x) var(--y),transparent 62%,#000 100%);
+            mask-image:radial-gradient(ellipse var(--rx) var(--ry) at var(--x) var(--y),transparent 62%,#000 100%);
+  }
+  .hs-scrim{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(8,8,11,.45) 0%,rgba(8,8,11,.08) 45%,rgba(8,8,11,.55) 100%)}
+
   .hs::after{content:"";position:absolute;left:0;right:0;bottom:0;height:26%;background:linear-gradient(to top,var(--bg),transparent);pointer-events:none}
   .hs-content{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 28px}
   .hs-name{font-size:clamp(56px,11.5vw,200px);line-height:.9;letter-spacing:-.055em;font-weight:600;margin-bottom:14px;text-shadow:0 4px 40px rgba(0,0,0,.6)}
@@ -531,20 +546,15 @@
   <!-- ============ HERO ============ -->
   <section class="hs" aria-label="Intro">
     <div class="hs-stage" aria-hidden="true">
-      <!-- base layer: Senna, no helmet -->
+      <!-- embaixo: piloto de capacete (aparece só dentro do oval do mouse) -->
       <div class="hs-layer">
-        <picture>
-          <source media="(max-width:700px)" srcset="senna-rosto-m.webp" />
-          <img src="senna-rosto.webp" alt="" fetchpriority="high" />
-        </picture>
+        <img src="watermarked_img_3440555834012973694.jpg" alt="" draggable="false" />
       </div>
-      <!-- revealed under the cursor: helmet version -->
-      <div class="hs-layer hs-reveal" id="hsReveal">
-        <picture>
-          <source media="(max-width:700px)" srcset="senna-capacete-m.webp" />
-          <img src="senna-capacete.webp" alt="" />
-        </picture>
+      <!-- por cima: você normal, com buraco oval que segue o mouse -->
+      <div class="hs-layer hs-me" id="hsMe">
+        <img src="watermarked_img_18240833931774642318.jpg_7aead500_2K.jpg" alt="" fetchpriority="high" draggable="false" />
       </div>
+      <div class="hs-scrim"></div>
     </div>
 
     <div class="hs-content">
@@ -1073,67 +1083,74 @@
   }
 
   // ---------- Cursor glow ----------
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduce) {
-    let raf = null;
+  const reduceGlow = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceGlow) {
+    let rafGlow = null;
     window.addEventListener('pointermove', (e) => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
+      if (rafGlow) return;
+      rafGlow = requestAnimationFrame(() => {
         document.documentElement.style.setProperty('--mx', e.clientX + 'px');
         document.documentElement.style.setProperty('--my', e.clientY + 'px');
-        raf = null;
+        rafGlow = null;
       });
     }, { passive: true });
   }
-  // ---------- Hero: face layer revealed under the cursor ----------
+
+  // ---------- Hero: cursor reveal (sua foto por cima, piloto embaixo) ----------
   (function () {
-    var reveal = document.getElementById('hsReveal');
+    var me = document.getElementById('hsMe');
     var book = document.getElementById('hsBook');
+
+    // botão "Book a call" abre o Calendly
     if (book) book.addEventListener('click', function (e) {
       if (window.Calendly) { e.preventDefault(); window.Calendly.initPopupWidget({ url: book.href }); }
     });
-    if (!reveal) return;
-    var hero = reveal.closest('.hs');
-    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
-    var mobileMQ = matchMedia('(max-width: 700px)');
-    var x = 0, y = 0, r = 0, px = 0, py = 0, active = false, visible = true;
 
-    function face(b) {
-      var m = mobileMQ.matches;
-      var ratio = m ? 1150 / 1792 : 16 / 9, fx = m ? 0.5 : 0.585, fy = m ? 0.24 : 0.46;
-      var s = Math.max(b.width / ratio, b.height), dh = s, dw = s * ratio;
-      return { x: (b.width - dw) / 2 + fx * dw, y: fy * dh };
+    if (!me) return;
+    // só desktop com mouse; no celular fica só a sua foto (estado estático)
+    if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var hero = me.closest('.hs');
+    var W = 260, H = 330;          // tamanho do oval (ajuste aqui)
+    var LERP = 0.22;               // suavização do movimento
+    var SLERP = 0.2;               // suavização de abrir/fechar o oval
+    var tx = 0, ty = 0, cx = 0, cy = 0;
+    var s = 0, st = 0;             // escala atual / alvo (0 = fechado, 1 = aberto)
+    var raf = null, started = false;
+
+    function apply() {
+      var rx = Math.max(0.01, (W / 2) * s), ry = Math.max(0.01, (H / 2) * s);
+      me.style.setProperty('--x', cx + 'px');
+      me.style.setProperty('--y', cy + 'px');
+      me.style.setProperty('--rx', rx + 'px');
+      me.style.setProperty('--ry', ry + 'px');
     }
 
-    hero.addEventListener('pointermove', function (e) {
-      if (e.pointerType === 'mouse' || e.buttons || e.pointerType === 'touch') { active = true; px = e.clientX; py = e.clientY; }
+    function tick() {
+      var dx = tx - cx, dy = ty - cy, ds = st - s;
+      cx += dx * LERP; cy += dy * LERP; s += ds * SLERP;
+      if (Math.abs(dx) < 0.3 && Math.abs(dy) < 0.3 && Math.abs(ds) < 0.005) {
+        cx = tx; cy = ty; s = st; apply(); raf = null; return;   // parou: encerra o loop
+      }
+      apply();
+      raf = requestAnimationFrame(tick);
+    }
+
+    hero.addEventListener('mousemove', function (e) {
+      var r = me.getBoundingClientRect();
+      tx = e.clientX - r.left;
+      ty = e.clientY - r.top;
+      if (!started) { started = true; cx = tx; cy = ty; }   // primeiro movimento: posiciona direto
+      st = 1;
+      if (!raf) raf = requestAnimationFrame(tick);
     }, { passive: true });
-    hero.addEventListener('pointerdown', function (e) { active = true; px = e.clientX; py = e.clientY; });
-    ['pointerleave', 'pointerup', 'pointercancel'].forEach(function (ev) {
-      hero.addEventListener(ev, function () { active = false; });
+
+    hero.addEventListener('mouseleave', function () {
+      st = 0; started = false;       // fecha o oval: volta a ficar só você
+      if (!raf) raf = requestAnimationFrame(tick);
     });
-
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { threshold: 0 }).observe(hero);
-    }
-
-    function loop(t) {
-      requestAnimationFrame(loop);
-      if (!visible) return;
-      var b = reveal.getBoundingClientRect(), f = face(b), tx, ty, tr, big = Math.min(b.width, b.height);
-      if (reduce) { tx = f.x; ty = f.y; tr = big * 0.3; }
-      else if (active) { tx = px - b.left; ty = py - b.top; tr = fine ? Math.max(190, b.width * 0.14) : big * 0.34; }
-      else if (fine) { tx = x; ty = y; tr = 0; }
-      else { tx = f.x + Math.sin(t * 0.0009) * b.width * 0.16; ty = f.y + Math.cos(t * 0.0013) * b.height * 0.07; tr = big * 0.34; }
-      if (r < 1 && tr > 0 && fine && !reduce) { x = tx; y = ty; }
-      x += (tx - x) * 0.14; y += (ty - y) * 0.14; r += (tr - r) * 0.12;
-      reveal.style.setProperty('--x', x + 'px');
-      reveal.style.setProperty('--y', y + 'px');
-      reveal.style.setProperty('--r', Math.max(0, r) + 'px');
-    }
-    requestAnimationFrame(loop);
   })();
 </script>
-<script src="hero-fx.js" defer></script></body>
+</body>
 </html>
