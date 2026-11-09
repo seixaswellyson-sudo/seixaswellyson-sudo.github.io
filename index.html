@@ -274,9 +274,9 @@
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
     mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
   }
-  .marquee-track { display: flex; width: max-content; animation: marquee 52s linear infinite; }
+  .marquee-track { display: flex; width: max-content; will-change: transform; animation: marquee 40s linear infinite; }
   .marquee-group { display: flex; flex: none; }
-  .marquee-group img { height: 92px; width: auto; flex: none; opacity: 0.85; }
+  .marquee-group img { max-width: none; height: 92px; width: auto; flex: none; opacity: 0.85; }
   .marquee:hover .marquee-track { animation-play-state: paused; }
   @keyframes marquee { to { transform: translateX(-50%); } }
 
@@ -330,12 +330,22 @@
       radial-gradient(85% 120% at 50% 0%, var(--tint, rgba(217, 83, 30, 0.22)), transparent 62%),
       linear-gradient(155deg, #14141c, #09090e);
   }
-  .card.featured .card-visual { height: auto; min-height: 356px; }
+  .card.featured .card-visual { height: auto; min-height: 356px; padding: 32px 0; }
 
   .v1 { --tint: rgba(217, 83, 30, 0.30); }
   .v2 { --tint: rgba(96, 76, 255, 0.26); }
   .v3 { --tint: rgba(56, 211, 159, 0.22); }
   .v4 { --tint: rgba(240, 138, 36, 0.24); }
+
+  /* Vídeo Vimeo no card destaque */
+  .video-wrap {
+    position: relative; z-index: 1;
+    width: min(88%, 520px);
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    box-shadow: 0 28px 56px -28px #000;
+    background: #000;
+  }
 
   /* video frame mockup */
   .frame {
@@ -347,7 +357,6 @@
     display: grid; place-items: center;
     transition: transform 0.6s var(--ease), border-color 0.4s ease;
   }
-  .card.featured .frame { width: min(76%, 420px); }
   .frame::before {
     content: ""; position: absolute; inset: 0;
     background: radial-gradient(90% 130% at 50% -15%, var(--tint, rgba(217, 83, 30, 0.3)), transparent 66%);
@@ -552,6 +561,8 @@
     .projects { grid-template-columns: 1fr; }
     .section-head { flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 34px; }
     .card-visual { height: 210px; }
+    .card.featured .card-visual { height: auto; min-height: 0; padding: 24px 0; }
+    .video-wrap { width: 90%; }
     .frame { width: min(88%, 300px); }
     .card-body { padding: 22px; }
     .card h3 { font-size: 20px; }
@@ -691,28 +702,29 @@
   <section class="brands" aria-label="Brands and creators I have worked with">
     <div class="wrap">
       <span class="brands-label">Brands &amp; creators I’ve worked with</span>
-<div class="marquee">
-  <div class="marquee-track">
-    <div class="marquee-group">
-      <img src="marcas_fundo_transparente.png" alt="" />
-      <img src="marcas_fundo_transparente.png" alt="" />
-      <img src="marcas_fundo_transparente.png" alt="" />
-      <img src="marcas_fundo_transparente.png" alt="" />
-      <img src="marcas_fundo_transparente.png" alt="" />
-      <img src="marcas_fundo_transparente.png" alt="" />
-    </div>
-    <div class="marquee-group" aria-hidden="true">
-      <img src="marcas_fundo_transparente.png" alt="" />
-      <img src="marcas_fundo_transparente.png" alt="" />
-      <img src="marcas_fundo_transparente.png" alt="" />
-      <img src="marcas_fundo_transparente.png" alt="" />
-      <img src="marcas_fundo_transparente.png" alt="" />
-      <img src="marcas_fundo_transparente.png" alt="" />
-    </div>
-  </div>
-</div>
+      <div class="marquee">
+        <div class="marquee-track">
+          <div class="marquee-group">
+            <img src="marcas_fundo_transparente.png" alt="" />
+            <img src="marcas_fundo_transparente.png" alt="" />
+            <img src="marcas_fundo_transparente.png" alt="" />
+            <img src="marcas_fundo_transparente.png" alt="" />
+            <img src="marcas_fundo_transparente.png" alt="" />
+            <img src="marcas_fundo_transparente.png" alt="" />
+          </div>
+          <div class="marquee-group" aria-hidden="true">
+            <img src="marcas_fundo_transparente.png" alt="" />
+            <img src="marcas_fundo_transparente.png" alt="" />
+            <img src="marcas_fundo_transparente.png" alt="" />
+            <img src="marcas_fundo_transparente.png" alt="" />
+            <img src="marcas_fundo_transparente.png" alt="" />
+            <img src="marcas_fundo_transparente.png" alt="" />
+          </div>
+        </div>
+      </div>
     </div>
   </section>
+
   <!-- ============ STATS / PROOF ============ -->
   <section class="proof" id="results" aria-label="Results and reach">
     <div class="statbar">
@@ -741,10 +753,9 @@
 
         <!-- Featured -->
         <article class="card featured reveal">
-          <div class="video-wrap">
-  <div style="padding:75% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1245205817?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Wellyson showreel"></iframe></div>
-  <script src="https://player.vimeo.com/api/player.js"></script>
-</div>
+          <div class="card-visual v1">
+            <div class="video-wrap">
+              <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1245205817?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Wellyson showreel"></iframe></div>
             </div>
           </div>
           <div class="card-body">
@@ -938,6 +949,7 @@
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
 
+<script src="https://player.vimeo.com/api/player.js"></script>
 <script>
   // ---------- Year ----------
   document.getElementById('year').textContent = new Date().getFullYear();
