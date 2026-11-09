@@ -274,9 +274,9 @@
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
     mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
   }
-  .marquee-track { display: flex; width: max-content; will-change: transform; animation: marquee 40s linear infinite; }
+  .marquee-track { display: flex; width: max-content; animation: marquee 52s linear infinite; }
   .marquee-group { display: flex; flex: none; }
-  .marquee-group img { max-width: none; height: 92px; width: auto; flex: none; opacity: 0.85; }
+  .marquee-group img { height: 92px; width: auto; flex: none; opacity: 0.85; }
   .marquee:hover .marquee-track { animation-play-state: paused; }
   @keyframes marquee { to { transform: translateX(-50%); } }
 
@@ -330,24 +330,12 @@
       radial-gradient(85% 120% at 50% 0%, var(--tint, rgba(217, 83, 30, 0.22)), transparent 62%),
       linear-gradient(155deg, #14141c, #09090e);
   }
-  .card.featured .card-visual { height: auto; min-height: 356px; padding: 32px 0; }
+  .card.featured .card-visual { height: auto; min-height: 356px; }
 
   .v1 { --tint: rgba(217, 83, 30, 0.30); }
   .v2 { --tint: rgba(96, 76, 255, 0.26); }
   .v3 { --tint: rgba(56, 211, 159, 0.22); }
   .v4 { --tint: rgba(240, 138, 36, 0.24); }
-
-  /* Vimeo video inside cards */
-  .video-wrap {
-    position: relative; z-index: 1;
-    width: min(88%, 520px);
-    border-radius: 16px; overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.13);
-    box-shadow: 0 28px 56px -28px #000;
-    background: #000;
-  }
-  .card-visual.has-video { height: auto; padding: 24px 0; }
-  .card-visual.has-video .video-wrap { width: min(90%, 480px); }
 
   /* video frame mockup */
   .frame {
@@ -359,6 +347,7 @@
     display: grid; place-items: center;
     transition: transform 0.6s var(--ease), border-color 0.4s ease;
   }
+  .card.featured .frame { width: min(76%, 420px); }
   .frame::before {
     content: ""; position: absolute; inset: 0;
     background: radial-gradient(90% 130% at 50% -15%, var(--tint, rgba(217, 83, 30, 0.3)), transparent 66%);
@@ -387,6 +376,22 @@
   }
   .wave { display: flex; align-items: flex-end; gap: 2px; height: 22px; margin-bottom: 9px; }
   .wave i { flex: 1; min-width: 2px; border-radius: 2px; height: 30%; background: linear-gradient(to top, rgba(217, 83, 30, 0.8), rgba(255, 255, 255, 0.38)); }
+  .wave i:nth-child(1) { height: 40%; }
+  .wave i:nth-child(2) { height: 66%; }
+  .wave i:nth-child(3) { height: 32%; }
+  .wave i:nth-child(4) { height: 84%; }
+  .wave i:nth-child(5) { height: 54%; }
+  .wave i:nth-child(6) { height: 96%; }
+  .wave i:nth-child(7) { height: 46%; }
+  .wave i:nth-child(8) { height: 74%; }
+  .wave i:nth-child(9) { height: 36%; }
+  .wave i:nth-child(10) { height: 60%; }
+  .wave i:nth-child(11) { height: 90%; }
+  .wave i:nth-child(12) { height: 50%; }
+  .wave i:nth-child(13) { height: 70%; }
+  .wave i:nth-child(14) { height: 30%; }
+  .wave i:nth-child(15) { height: 80%; }
+  .wave i:nth-child(16) { height: 56%; }
 
   .cap { display: grid; gap: 5px; }
   .cap b { display: block; height: 5px; border-radius: 3px; background: rgba(255, 255, 255, 0.42); }
@@ -547,10 +552,6 @@
     .projects { grid-template-columns: 1fr; }
     .section-head { flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 34px; }
     .card-visual { height: 210px; }
-    .card.featured .card-visual { height: auto; min-height: 0; padding: 24px 0; }
-    .card-visual.has-video { height: auto; padding: 20px 0; }
-    .card-visual.has-video .video-wrap { width: 92%; }
-    .video-wrap { width: 90%; }
     .frame { width: min(88%, 300px); }
     .card-body { padding: 22px; }
     .card h3 { font-size: 20px; }
@@ -571,28 +572,83 @@
     .float-card { animation: none; }
   }
 
-  /* ---------- WhatsApp verde pulsando ---------- */
-  .wa {
-    background: #25D366 !important;
-    border: 1px solid #25D366 !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    box-shadow: none;
-    animation: waPulse 2s infinite !important;
+  /* ==========================================================
+     SECTION A — SERVICES (after Work, before Contact)
+     ========================================================== */
+  #services .section-head h2 em,
+  #process .section-head h2 em,
+  #faq .section-head h2 em {
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    color: var(--accent); letter-spacing: -0.01em;
   }
-  .wa:hover, .wa:focus-visible {
-    background: #2fe173 !important;
-    border-color: #2fe173 !important;
-    animation: none !important;
-    box-shadow: 0 0 28px 2px rgba(37, 211, 102, 0.55);
+
+  .svc-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px; }
+  .svc-card { grid-column: span 2; gap: 13px; padding: 26px 24px 28px; }
+  .svc-card:nth-child(4), .svc-card:nth-child(5) { grid-column: span 3; }
+  .svc-icon {
+    width: 38px; height: 38px; flex: none; border-radius: 11px;
+    display: grid; place-items: center;
+    color: var(--accent);
+    border: 1px solid rgba(217, 83, 30, 0.3);
+    background: var(--accent-soft);
+    transition: border-color 0.3s ease, background 0.3s ease;
   }
-  .wa-label { color: #04210f; font-weight: 600; }
-  .wa-icon, .wa:hover .wa-icon { color: #fff; background: transparent; }
-  .wa-icon svg { width: 31px; height: 31px; }
-  @keyframes waPulse {
-    0%   { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
-    70%  { box-shadow: 0 0 0 18px rgba(37, 211, 102, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+  .svc-icon svg { width: 18px; height: 18px; }
+  .svc-card:hover .svc-icon { border-color: rgba(217, 83, 30, 0.55); background: rgba(217, 83, 30, 0.18); }
+  .svc-card h3 { font-size: 17.5px; letter-spacing: -0.02em; }
+  .svc-card p { font-size: 14px; line-height: 1.65; }
+
+  /* ==========================================================
+     SECTION B — PROCESS (after Services)
+     ========================================================== */
+  .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+  .step { gap: 12px; padding: 26px 24px 28px; }
+  .step-num {
+    display: block; font-family: var(--serif); font-weight: 400;
+    font-size: 40px; line-height: 1; letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+  .step h3 { font-size: 16.5px; line-height: 1.25; letter-spacing: -0.02em; }
+  .step p { font-size: 13.8px; line-height: 1.6; }
+  .steps-note { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+
+  /* ==========================================================
+     SECTION C — FAQ (after Process, before Contact)
+     ========================================================== */
+  .faq-list { max-width: 880px; border-top: 1px solid var(--line); }
+  .faq-item { border-bottom: 1px solid var(--line); }
+  .faq-item summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    padding: 22px 2px; cursor: pointer; list-style: none;
+    font-size: 16.5px; font-weight: 500; letter-spacing: -0.015em;
+    color: var(--text);
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::marker { content: ""; }
+  .faq-plus {
+    flex: none; width: 26px; height: 26px; border-radius: 50%;
+    display: grid; place-items: center;
+    border: 1px solid var(--line); color: var(--muted);
+    transition: transform 0.3s var(--ease), color 0.2s ease, border-color 0.2s ease;
+  }
+  .faq-plus svg { width: 13px; height: 13px; }
+  .faq-item summary:hover .faq-plus { border-color: var(--line-strong); color: var(--text); }
+  .faq-item[open] .faq-plus { transform: rotate(45deg); color: var(--accent); border-color: rgba(217, 83, 30, 0.45); }
+  .faq-a { max-width: 700px; padding: 0 56px 24px 2px; color: var(--muted); font-size: 14.5px; line-height: 1.7; }
+
+  /* ---------- New sections: responsive ---------- */
+  @media (max-width: 980px) {
+    .svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .svc-card, .svc-card:nth-child(4), .svc-card:nth-child(5) { grid-column: auto; }
+    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 700px) {
+    .svc-grid, .steps { grid-template-columns: 1fr; }
+    .svc-card, .step { padding: 22px 20px 24px; }
+    .step-num { font-size: 34px; }
+    .faq-item summary { padding: 19px 0; font-size: 15.5px; gap: 16px; }
+    .faq-a { padding: 0 0 22px; font-size: 14px; }
   }
 </style>
 <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
@@ -607,7 +663,7 @@
 <header class="nav" id="nav">
   <div class="nav-inner">
     <a href="#top" class="brand" aria-label="Wellyson, home">
-      <span class="brand-mark" aria-hidden="true" style="background:#000;box-shadow:none;"><img src="photo_5150336073845116518_y.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:50% 25%;border-radius:inherit;" /></span>
+      <span class="brand-mark" aria-hidden="true">W</span>
       <span>Wellyson</span>
     </a>
 
@@ -668,7 +724,7 @@
 
         <div class="hero-media reveal">
           <div class="portrait">
-            <img src="photo_5098524131006811937_y.jpg" alt="Wellyson, short-form video editor" fetchpriority="high" />
+            <img src="wellyson-hero.jpg" alt="Wellyson, short-form video editor" fetchpriority="high" />
             <div class="portrait-meta">
               <span class="pill">English only</span>
               <span>Short-form · Social · Ads</span>
@@ -694,20 +750,16 @@
       <div class="marquee">
         <div class="marquee-track">
           <div class="marquee-group">
-            <img src="marcas_fundo_transparente.png" alt="" />
-            <img src="marcas_fundo_transparente.png" alt="" />
-            <img src="marcas_fundo_transparente.png" alt="" />
-            <img src="marcas_fundo_transparente.png" alt="" />
-            <img src="marcas_fundo_transparente.png" alt="" />
-            <img src="marcas_fundo_transparente.png" alt="" />
+            <img src="brands-marquee.webp" alt="" loading="lazy" />
+            <img src="brands-marquee.webp" alt="" loading="lazy" />
+            <img src="brands-marquee.webp" alt="" loading="lazy" />
+            <img src="brands-marquee.webp" alt="" loading="lazy" />
           </div>
           <div class="marquee-group" aria-hidden="true">
-            <img src="marcas_fundo_transparente.png" alt="" />
-            <img src="marcas_fundo_transparente.png" alt="" />
-            <img src="marcas_fundo_transparente.png" alt="" />
-            <img src="marcas_fundo_transparente.png" alt="" />
-            <img src="marcas_fundo_transparente.png" alt="" />
-            <img src="marcas_fundo_transparente.png" alt="" />
+            <img src="brands-marquee.webp" alt="" loading="lazy" />
+            <img src="brands-marquee.webp" alt="" loading="lazy" />
+            <img src="brands-marquee.webp" alt="" loading="lazy" />
+            <img src="brands-marquee.webp" alt="" loading="lazy" />
           </div>
         </div>
       </div>
@@ -719,8 +771,8 @@
     <div class="statbar">
       <div><b>500+</b><span>Videos Edited</span></div>
       <div><b>10M+</b><span>Views Generated</span></div>
-      <div><b>2</b><span>Free Revisions</span></div>
-      <div><b>24h</b><span>Avg. Turnaround</span></div>
+      <div><b class="txt">English Only</b><span>Video Editing</span></div>
+      <div><b class="txt">Worldwide</b><span>Clients</span></div>
     </div>
     <p class="proof-note">
       Every edit delivered in English<span class="sep">·</span>Remote-first, working with creators and brands worldwide
@@ -743,14 +795,21 @@
         <!-- Featured -->
         <article class="card featured reveal">
           <div class="card-visual v1">
-            <div class="video-wrap">
-              <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1245205817?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Wellyson showreel"></iframe></div>
+            <div class="frame" aria-hidden="true">
+              <div class="frame-top"><span>00:00:12:04</span><span class="hv">9:16</span></div>
+              <span class="play">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6L19 12z"/></svg>
+              </span>
+              <div class="frame-bottom">
+                <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="cap"><b></b><b></b></div>
+              </div>
             </div>
           </div>
           <div class="card-body">
             <div class="card-top">
               <span class="card-index">01 — Featured</span>
-              <span class="card-year">16:9 · Showreel</span>
+              <span class="card-year">9:16 · 20–45s</span>
             </div>
             <h3>Short-form, made to hook</h3>
             <p>
@@ -770,17 +829,23 @@
           </div>
         </article>
 
-        <!-- Video 2 -->
         <article class="card reveal">
-          <div class="card-visual has-video v2">
-            <div class="video-wrap">
-              <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1238143675?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Project 02"></iframe></div>
+          <div class="card-visual v2">
+            <div class="frame" aria-hidden="true">
+              <div class="frame-top"><span>00:04:38:11</span><span class="hv">16:9</span></div>
+              <span class="play">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6L19 12z"/></svg>
+              </span>
+              <div class="frame-bottom">
+                <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="cap"><b></b><b></b></div>
+              </div>
             </div>
           </div>
           <div class="card-body">
             <div class="card-top">
               <span class="card-index">02</span>
-              <span class="card-year">Short-form</span>
+              <span class="card-year">9:16 clips</span>
             </div>
             <h3>Long-form into short-form</h3>
             <p>
@@ -800,17 +865,23 @@
           </div>
         </article>
 
-        <!-- Video 3 -->
         <article class="card reveal">
-          <div class="card-visual has-video v3">
-            <div class="video-wrap">
-              <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1231477722?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Project 03"></iframe></div>
+          <div class="card-visual v3">
+            <div class="frame" aria-hidden="true">
+              <div class="frame-top"><span>00:00:28:16</span><span class="hv">4:5</span></div>
+              <span class="play">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6L19 12z"/></svg>
+              </span>
+              <div class="frame-bottom">
+                <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="cap"><b></b><b></b></div>
+              </div>
             </div>
           </div>
           <div class="card-body">
             <div class="card-top">
               <span class="card-index">03</span>
-              <span class="card-year">Short-form</span>
+              <span class="card-year">4:5 · 9:16</span>
             </div>
             <h3>Ads that actually sell</h3>
             <p>
@@ -830,17 +901,23 @@
           </div>
         </article>
 
-        <!-- Video 4 -->
         <article class="card reveal">
-          <div class="card-visual has-video v4">
-            <div class="video-wrap">
-              <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1231472150?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Project 04"></iframe></div>
+          <div class="card-visual v4">
+            <div class="frame" aria-hidden="true">
+              <div class="frame-top"><span>00:01:06:02</span><span class="hv">1:1</span></div>
+              <span class="play">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6L19 12z"/></svg>
+              </span>
+              <div class="frame-bottom">
+                <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="cap"><b></b><b></b></div>
+              </div>
             </div>
           </div>
           <div class="card-body">
             <div class="card-top">
               <span class="card-index">04</span>
-              <span class="card-year">Short-form</span>
+              <span class="card-year">Weekly retainer</span>
             </div>
             <h3>Social media, on schedule</h3>
             <p>
@@ -860,95 +937,166 @@
           </div>
         </article>
 
-        <!-- Video 5 -->
-        <article class="card reveal">
-          <div class="card-visual has-video v1">
-            <div class="video-wrap">
-              <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1245227995?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Project 05"></iframe></div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-top">
-              <span class="card-index">05</span>
-              <span class="card-year">Short-form</span>
-            </div>
-            <h3>Long-form into short-form</h3>
-            <p>
-              Podcasts, interviews and webinars turned into a month of clips:
-              picked moments, subtitled, and opened with a hook that stops the
-              scroll.
-            </p>
-            <div class="tags">
-              <span class="tag">Repurposing</span>
-              <span class="tag">Subtitles</span>
-              <span class="tag">Hooks</span>
-            </div>
-            <a href="#contact" class="card-link">
-              Start a project
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
-            </a>
-          </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">How I help</div>
+          <h2>What I do for <em>you</em></h2>
+        </div>
+        <p>Professional editing for every content type — delivered fast, with 2 free revisions every time.</p>
+      </div>
+
+      <div class="svc-grid">
+
+        <article class="card svc-card reveal">
+          <span class="svc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="m10.6 9.6 4.2 2.4-4.2 2.4z"/></svg>
+          </span>
+          <h3>Short-Form Editing</h3>
+          <p>Scroll-stopping Reels and Shorts with trending cuts, burned-in captions, sound design and hooks that hold attention.</p>
         </article>
 
-        <!-- Video 6 -->
-        <article class="card reveal">
-          <div class="card-visual has-video v2">
-            <div class="video-wrap">
-              <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1245228317?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Project 06"></iframe></div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-top">
-              <span class="card-index">06</span>
-              <span class="card-year">Short-form</span>
-            </div>
-            <h3>Ads that actually sell</h3>
-            <p>
-              Marketing-minded edits for product launches and paid social:
-              benefit-first structure, clean sound design, and variants ready
-              to test.
-            </p>
-            <div class="tags">
-              <span class="tag">Ad creative</span>
-              <span class="tag">UGC</span>
-              <span class="tag">Direct response</span>
-            </div>
-            <a href="#contact" class="card-link">
-              Start a project
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
-            </a>
-          </div>
+        <article class="card svc-card reveal">
+          <span class="svc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5.2 20.5a6.8 6.8 0 0 1 13.6 0"/></svg>
+          </span>
+          <h3>Talking Head Editing</h3>
+          <p>Clean cuts, tight pacing, captions and B-roll that keep your message clear and viewers watching.</p>
         </article>
 
-        <!-- Video 7 -->
-        <article class="card reveal">
-          <div class="card-visual has-video v3">
-            <div class="video-wrap">
-              <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1245228296?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Project 07"></iframe></div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-top">
-              <span class="card-index">07</span>
-              <span class="card-year">Short-form</span>
-            </div>
-            <h3>Social media, on schedule</h3>
-            <p>
-              An ongoing editing partner for creators and small teams:
-              consistent look, platform-native exports, and a delivery
-              rhythm you can plan around.
-            </p>
-            <div class="tags">
-              <span class="tag">Social media</span>
-              <span class="tag">Branding</span>
-              <span class="tag">Consistency</span>
-            </div>
-            <a href="#contact" class="card-link">
-              Start a project
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
-            </a>
-          </div>
+        <article class="card svc-card reveal">
+          <span class="svc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5M8.5 21.5h7"/></svg>
+          </span>
+          <h3>Podcast Editing</h3>
+          <p>Clean audio, branded intros and outros, animated captions and short clips repurposed for social.</p>
         </article>
+
+        <article class="card svc-card reveal">
+          <span class="svc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.4v3.2A1.6 1.6 0 0 0 5.6 15.2H8l6.4 4V4.8L8 8.8H5.6A1.6 1.6 0 0 0 4 10.4Z"/><path d="M18.2 9.2a4.4 4.4 0 0 1 0 5.6M8 15.2V20"/></svg>
+          </span>
+          <h3>Ad Video Editing</h3>
+          <p>High-converting video ads for Facebook, Instagram and TikTok — strong hooks, clear offers and punchy CTAs.</p>
+        </article>
+
+        <article class="card svc-card reveal">
+          <span class="svc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2.2"/><path d="M16 8V6.2A2.2 2.2 0 0 0 13.8 4H6.2A2.2 2.2 0 0 0 4 6.2v7.6A2.2 2.2 0 0 0 6.2 16H8"/></svg>
+          </span>
+          <h3>Content Repurposing</h3>
+          <p>Turn one long video into 5+ short clips for every platform. Maximum reach from a single piece of content.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section class="process" id="process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">How we work together</div>
+          <h2>Simple. Clear. <em>Professional.</em></h2>
+        </div>
+        <p>No complicated process — just a smooth experience from start to final delivery.</p>
+      </div>
+
+      <div class="steps">
+
+        <article class="card step reveal">
+          <span class="step-num" aria-hidden="true">01</span>
+          <h3>Send Footage &amp; References</h3>
+          <p>Share your raw footage and any references you like. I’ll review everything and confirm I can deliver great results — often better than the reference.</p>
+        </article>
+
+        <article class="card step reveal">
+          <span class="step-num" aria-hidden="true">02</span>
+          <h3>Payment</h3>
+          <p>We agree on the project details and complete payment before editing begins. Simple and straightforward.</p>
+        </article>
+
+        <article class="card step reveal">
+          <span class="step-num" aria-hidden="true">03</span>
+          <h3>First Draft Delivered</h3>
+          <p>I edit your video with full focus, then send the first draft for your review — usually within 24–48 hours.</p>
+        </article>
+
+        <article class="card step reveal">
+          <span class="step-num" aria-hidden="true">04</span>
+          <h3>Revisions &amp; Final Delivery</h3>
+          <p>You get 2 revision rounds per video, so the final cut lands exactly right — then your polished video is delivered, ready to publish.</p>
+        </article>
+
+      </div>
+
+      <div class="steps-note reveal">
+        <span class="tag">2 free revisions</span>
+        <span class="tag">24–48h first draft</span>
+        <span class="tag">English-only edits</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">FAQ</div>
+          <h2>Questions? <em>Answered.</em></h2>
+        </div>
+        <p>A few things clients usually ask before the first edit. Anything else — just message me.</p>
+      </div>
+
+      <div class="faq-list reveal">
+
+        <details class="faq-item">
+          <summary>
+            How many revisions do I get?
+            <span class="faq-plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </summary>
+          <p class="faq-a">Two free revision rounds on every video. Small tweaks after that are no problem — I’d rather you publish something you’re happy with.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            How do I send you my raw footage?
+            <span class="faq-plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </summary>
+          <p class="faq-a">Send a Google Drive, Dropbox or WeTransfer link — no need to compress anything. If your files are large, I’ll set up a folder for you to upload to.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            How long does editing take?
+            <span class="faq-plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </summary>
+          <p class="faq-a">Most short-form edits come back as a first draft within 24–48 hours. Longer ad or repurposing batches get a delivery date agreed before we start.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            Do you show your prices?
+            <span class="faq-plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </summary>
+          <p class="faq-a">Each project is quoted per video, based on length, footage volume and how many variants you need. Send me the details and you’ll get a flat price — no hidden fees.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            How do we get started?
+            <span class="faq-plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </summary>
+          <p class="faq-a">Message me on WhatsApp with what you’re launching and when you need it. We agree on scope and payment, you send the footage, and I start editing.</p>
+        </details>
 
       </div>
     </div>
@@ -1010,7 +1158,6 @@
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
 
-<script src="https://player.vimeo.com/api/player.js"></script>
 <script>
   // ---------- Year ----------
   document.getElementById('year').textContent = new Date().getFullYear();
